@@ -1,0 +1,1 @@
+I will be inplementing product search funcionality to multishop. 

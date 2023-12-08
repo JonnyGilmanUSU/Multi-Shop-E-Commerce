@@ -160,27 +160,39 @@ export const loginAction = async ({ request }) => {
 // logout loader removes data from local storage
 export const logoutLoader = () => {
     localStorage.removeItem("userData");
-    redirect('/');
+    return redirect('/categories');
+    console.log("logged out")
 };
 
 export const authStatusLoader = () => {
-    const userDataString = localStorage.getItem('userData');
-    const userData = JSON.parse(userDataString);
-
-    const now = new Date();
-    const expirationDate = userData.expires;
-
-    if (!userDataString) {
+    // Retrieve user data from local storage
+    const userDataJSON = localStorage.getItem("userData");
+    
+    if (!userDataJSON) {
+        // If no user data is found, redirect to the login page
+        console.log("User data is null")
         return null;
     }
 
+     // Parse the user data from JSON
+    const userData = JSON.parse(userDataJSON);
 
-    if (now > expirationDate) {
-        return redirect('/');
-    } else {
-        return userData;
+
+    // Check if the token has expired
+    const currentTimestamp = new Date().getTime();
+    const expirationTimestamp = new Date(userData.expires).getTime();
+
+    if (currentTimestamp >= expirationTimestamp) {
+        // If the token has expired, remove user data and redirect to the login page
+        localStorage.removeItem("userData");
+        return redirect('/logout');
     }
-}
+
+    // // If the token is still valid, return the userData object
+    console.log("Returning user data")
+    return userData;
+ 
+};
 
 
 export const placeOrderAction = (cartCtx) => async ({request}) => {    
@@ -245,6 +257,8 @@ export const placeOrderAction = (cartCtx) => async ({request}) => {
     });
 
     console.log("Order placed succesfully");
+
+    return redirect("/")
     }
 
     catch (error){

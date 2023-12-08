@@ -5,13 +5,16 @@ const ProductContext = createContext({
     getCategories: () => {},
     getProductsByCategory: (category) => {},
     getFeaturedProducts: () => {},
-    getProduct: (productId) => {}
+    getProduct: (productId) => {},
+    searchProducts: (searchTerm) => {},
 });
 
 export const ProductContextProvider = (props) => {
 
     // State variable to hold product data
     const [products, setProducts] = useState([]);
+
+
 
     useEffect(() => {
 
@@ -46,6 +49,25 @@ export const ProductContextProvider = (props) => {
             fetchProducts(); 
         }
     }, [])
+
+    // Function to search products 
+    const searchProducts = (searchTerm) => {
+        const lowecasedTerm = searchTerm.toLowerCase();
+        localStorage.setItem('searchTerm', lowecasedTerm);
+        // console.log("LOwecased search term in context:  ", lowecasedTerm)
+
+        const filteredSearchProducts = products.filter(product => {
+            return product.title.toLowerCase().includes(lowecasedTerm) ||
+                   product.category.toLowerCase().includes(lowecasedTerm) ||
+                   product.description.toLowerCase().includes(lowecasedTerm) ||
+                   product.brand.toLowerCase().includes(lowecasedTerm); 
+             });          
+            // console.log("Searched Products:     ", filteredSearchProducts)
+            return filteredSearchProducts
+    }
+
+    
+ 
 
     // Function that retrieves one item per category along with a count of items in that category
     const getCategories = () => {
@@ -93,7 +115,10 @@ export const ProductContextProvider = (props) => {
         getCategories,
         getProductsByCategory,
         getFeaturedProducts,
-        getProduct
+        getProduct,
+        searchProducts,
+        
+        
     }}>
         {props.children}
     </ProductContext.Provider>)

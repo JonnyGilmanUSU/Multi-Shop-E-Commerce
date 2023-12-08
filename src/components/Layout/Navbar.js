@@ -49,6 +49,9 @@ const NavBar = () => {
                 <NavLink to="/contact" className={({isActive}) => {
                     return isActive ? "nav-item nav-link active" : "nav-item nav-link"
                   }}>Contact</NavLink>
+                <NavLink to="/searched" className={({isActive}) => {
+                  return isActive ? "nav-item nav-link active" : "nav-item nav-link"
+                }}>Searched Items</NavLink>
               </div>
               <div className="navbar-nav ml-auto py-0 d-none d-lg-block">
                 <a href="/temp" className="btn px-0">

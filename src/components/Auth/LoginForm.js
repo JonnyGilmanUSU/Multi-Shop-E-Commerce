@@ -1,7 +1,19 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form } from 'react-router-dom';
+import { useActionData } from 'react-router-dom';
 
 const LoginForm = () => {
+    const data = useActionData();
+    console.log(data)
+    const [loginErrMsg, setLoginErrMsg] = useState('');
+
+    useEffect(() => {
+        if (data && data.response.request.status === 400) {
+            const errorMessage = data.response.data.error.message;
+            setLoginErrMsg(errorMessage);
+        }
+    }, [data]);
+
   return (
 
     <div className="col-lg-7 mb-5">
@@ -37,6 +49,7 @@ const LoginForm = () => {
                     <button className="btn btn-primary py-2 px-4" type="submit" id="sendMessageButton">Submit</button>
                 </div>
             </Form>
+            {loginErrMsg && <p style={{color: 'red', paddingTop: '1rem'}}>{loginErrMsg}</p>}
         </div>
     </div>
   )

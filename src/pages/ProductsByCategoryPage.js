@@ -18,6 +18,9 @@ const ProductsByCategoryPage = () => {
   // Product Context
   const prodCtx = useContext(ProductContext);
   const products = prodCtx.getProductsByCategory(category);
+  
+
+
 
   // # of Products In Each Brand
   const brandCounts = products.reduce((counts, product) => {

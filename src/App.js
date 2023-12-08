@@ -15,6 +15,7 @@ import ShoppingCartPage from "./pages/ShoppingCartPage";
 import CheckOutPage from "./pages/CheckOutPage";
 import { useContext } from "react";
 import CartContext from "./store/cart-context";
+import SearchedProductsPage from "./pages/SearchedProductsPage";
 
 
 
@@ -24,7 +25,7 @@ function App() {
   const cartCtx = useContext(CartContext);
 
   const router = createBrowserRouter([
-    {path: '/', element: <Layout />, errorElement: <Layout><ErrorPage /></Layout>, children: [
+    {path: '/', element: <Layout />, errorElement: <Layout><ErrorPage /></Layout>, loader: authStatusLoader, id:"root" , children: [
       {index: true, element: <FeaturedProducts/>},
       {path: 'categories', element: <CategoryList/>},
       {path: 'products/category/:category', element: <ProductsByCategoryPage/>},
@@ -34,7 +35,9 @@ function App() {
       {path: 'login', element: <LoginPage/>, action: loginAction},
       {path: 'cart', element: <ShoppingCartPage/>},
       {path: 'checkout', element: <CheckOutPage/>, action: placeOrderAction(cartCtx)},
-      {path: 'logout', loader: logoutLoader}
+      {path: 'logout', loader: logoutLoader},
+      {path: 'searched', element: <SearchedProductsPage/>}
+
     ]}
   ]);
   

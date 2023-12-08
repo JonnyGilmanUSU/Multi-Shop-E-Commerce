@@ -4,12 +4,19 @@ import { useRouteError } from 'react-router-dom';
 const ErrorPage = () => {
   const error = useRouteError();
 
-  // console.log("error from error page is:  ", error)
+  if (error.status === 500) {
+    return (
+    <>
+    <p>A server error has occurred: </p>
+    <p>{error.data.message}</p>
+    </>
+    )
+  }
+
 
   return (
     <>
       <div>Oops, an error has occured!</div>
-      {/* {error && <p>{error.data.message}</p>} */}
     </>
   
   )

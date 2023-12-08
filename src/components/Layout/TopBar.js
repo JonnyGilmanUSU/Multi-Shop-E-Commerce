@@ -1,6 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useRouteLoaderData } from "react-router-dom";
+import SearchForProductForm from "../Products/SearchForProductForm";
+import { useState } from "react";
 
 const TopBar = () => {
+    const userData = useRouteLoaderData("root");
+    
     return (
        
         <div className="container-fluid">
@@ -16,10 +20,19 @@ const TopBar = () => {
                 <div className="col-lg-6 text-center text-lg-right">
                     <div className="d-inline-flex align-items-center">
                         <div className="btn-group">
-                            <button type="button" className="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">My Account</button>
+                            <button type="button" className="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">
+                                {userData ? `Welcome, ${userData.firstname}!` : "My Account"}
+                            </button>
                             <div className="dropdown-menu dropdown-menu-right">
-                                <Link to="/login" className="dropdown-item" type="button">Sign in</Link>
-                                <Link to="/signup" className="dropdown-item" type="button">Sign up</Link>
+                                {!userData ? (
+                                    <>
+                                        <Link to="/login" className="dropdown-item" type="button">Sign in</Link>
+                                        <Link to="/signup" className="dropdown-item" type="button">Sign up</Link> 
+                                    </>
+                                ) : (
+                                    <Link to="/logout" className="dropdown-item" type="button">Sign Out</Link>
+                                )}
+
                             </div>
                         </div>
                         <div className="btn-group mx-2">
@@ -58,18 +71,7 @@ const TopBar = () => {
                         <span className="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Shop</span>
                     </a>
                 </div>
-                <div className="col-lg-4 col-6 text-left">
-                    <form action="">
-                        <div className="input-group">
-                            <input type="text" className="form-control" placeholder="Search for products" />
-                            <div className="input-group-append">
-                                <span className="input-group-text bg-transparent text-primary">
-                                    <i className="fa fa-search"></i>
-                                </span>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                <SearchForProductForm  />
                 <div className="col-lg-4 col-6 text-right">
                     <p className="m-0">Customer Service</p>
                     <h5 className="m-0">+012 345 6789</h5>
